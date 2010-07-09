@@ -63,6 +63,7 @@
 	<string>Erlang</string>
 	<key>ordering</key>
 	<array>
+		<string>B8CF3426-DC7E-4A60-A15B-1C4B08E59FF4</string>
 		<string>58EA597D-5158-4BF7-9FB2-B05135D1E166</string>
 		<string>3FBFF015-B650-4734-848C-47B53ACD5E32</string>
 		<string>AE84FFDF-2D5A-4331-A301-6CF34CF26CD8</string>
@@ -100,6 +101,9 @@
 		<string>756D50E8-C3E9-4ACD-B246-031E4D91D807</string>
 		<string>15DF3174-A8CD-40DA-BE74-B991425BA9EB</string>
 		<string>AF80483E-996B-44E8-A76D-8CD7AA3CDB8B</string>
+		<string>B6139782-669C-4E78-8B53-B70EC16A4044</string>
+		<string>81314DDD-FC3A-4497-938F-9AD2079A5C6E</string>
+		<string>45758473-E776-4D63-A16A-1C87A3660DCF</string>
 	</array>
 	<key>uuid</key>
 	<string>065A8821-DD83-4753-90E3-AA70EC12E150</string>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>beforeRunningCommand</key>
+	<string>saveActiveFile</string>
+	<key>command</key>
+	<string>#!/usr/bin/env ruby
+require 'date'
+require ENV['TM_SUPPORT_PATH'] + "/lib/exit_codes.rb"
+if ENV['TM_ERLANG_COMPILE'] == 'disable'
+  TextMate.exit_discard
+end
+
+projectDir = ENV['TM_PROJECT_DIRECTORY']
+fileDir = ENV['TM_DIRECTORY']
+erlangHome = ENV['ERLANG_HOME']
+rsrcPath = ENV['TM_BUNDLE_PATH'] + '/Resources'
+
+output = `cd #{projectDir};make --silent 2&gt;/dev/null`
+if output.length() != 0
+	puts "
+&lt;html&gt;
+	&lt;head&gt;
+		&lt;title&gt;Erlang Build: #{projectDir}&lt;/title&gt;
+	&lt;/head&gt;
+	&lt;style&gt;
+	ul {
+		padding-left: 20px
+	}
+	li.error {
+		list-style-image: url('#{rsrcPath}/tr_warn_error.jpg')
+	}
+	li.warning {
+		list-style-image: url('#{rsrcPath}/tr_warn_alert.jpg')
+	}
+	&lt;/style&gt;
+	&lt;body&gt;
+		&lt;h1&gt;Build errors/warnings as of #{DateTime.now()}&lt;/h1&gt;
+		&lt;ul&gt;"
+	output.each_line{|line|
+		if /(.*):(\d+):(\sWarning:|)\s(.*)/ =~ line
+			file = fileDir + '/' + Regexp.last_match[1]
+			lineNum = Regexp.last_match[2]
+			className = Regexp.last_match[3].size == 0 ? 'error' : 'warning'
+			message = Regexp.last_match[4]
+			url = "txmt://open/?url=file://" +
+			    file.gsub(/[^a-zA-Z0-9.-\/]/) { |m| sprintf("%%%02X", m[0]) } +
+		    	    "&amp;amp;line=" + lineNum
+			puts "&lt;li class=\"#{className}\"&gt;&lt;a href=\"#{url}\"&gt;#{line}&lt;/a&gt;"
+		end
+	}
+	puts "
+		&lt;/ul&gt;
+	&lt;/body&gt;
+&lt;/html&gt;"
+	TextMate.exit_show_html
+end</string>
+	<key>input</key>
+	<string>none</string>
+	<key>keyEquivalent</key>
+	<string>@s</string>
+	<key>name</key>
+	<string>Compile</string>
+	<key>output</key>
+	<string>discard</string>
+	<key>scope</key>
+	<string>source.erlang</string>
+	<key>uuid</key>
+	<string>B8CF3426-DC7E-4A60-A15B-1C4B08E59FF4</string>
+</dict>
+</plist>

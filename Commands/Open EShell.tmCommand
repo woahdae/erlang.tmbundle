@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>beforeRunningCommand</key>
+	<string>nop</string>
+	<key>command</key>
+	<string>osascript &lt;&lt;-APPLESCRIPT
+	tell application "Terminal"
+     	activate
+     	do script "erl -pa ${TM_PROJECT_DIRECTORY}/${TM_ERLANG_BIN}"
+	end tell
+APPLESCRIPT</string>
+	<key>input</key>
+	<string>none</string>
+	<key>keyEquivalent</key>
+	<string>^O</string>
+	<key>name</key>
+	<string>Open EShell</string>
+	<key>output</key>
+	<string>discard</string>
+	<key>scope</key>
+	<string>source.erlang</string>
+	<key>uuid</key>
+	<string>45758473-E776-4D63-A16A-1C87A3660DCF</string>
+</dict>
+</plist>

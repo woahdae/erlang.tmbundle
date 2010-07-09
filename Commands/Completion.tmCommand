@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>beforeRunningCommand</key>
+	<string>nop</string>
+	<key>command</key>
+	<string>#!/usr/bin/env python
+import socket
+import sys
+import os
+import subprocess
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+try:
+    s.connect(('127.0.0.1',2345))
+    tm_line_number = int(os.environ['TM_LINE_NUMBER'])
+    tm_line_index = int(os.environ['TM_LINE_INDEX'])
+    module = os.environ['TM_FILEPATH'].split('/').pop().split('.').pop(0)
+    paths = '"%s/%s"' % (os.environ['TM_PROJECT_DIRECTORY'], os.environ['TM_ERLANG_BIN'])
+    s.send('{%(module)s,[%(paths)s]}.' % locals())
+    s.send(os.linesep)
+    line_num = 1
+    for line in sys.stdin:
+        if line_num == tm_line_number:
+            s.send(line[0:tm_line_index].rstrip() + os.linesep)
+            break
+        line_num = line_num + 1
+    s.send('\f' + os.linesep)
+    sys.stdout.write(s.recv(4096).rstrip())
+    sys.stdout.flush()
+except socket.error:
+    support = os.environ['TM_BUNDLE_SUPPORT']
+    os.system('cd "%(support)s"/completion; make --silent &gt; /dev/null 2&gt;&amp;1' % locals())
+    os.system('erl -noshell -detached -pa "%(support)s/completion/ebin" -s tm_complete_server' % locals())</string>
+	<key>input</key>
+	<string>document</string>
+	<key>keyEquivalent</key>
+	<string>~</string>
+	<key>name</key>
+	<string>Completion</string>
+	<key>output</key>
+	<string>insertAsSnippet</string>
+	<key>scope</key>
+	<string>source.erlang</string>
+	<key>uuid</key>
+	<string>B6139782-669C-4E78-8B53-B70EC16A4044</string>
+</dict>
+</plist>
